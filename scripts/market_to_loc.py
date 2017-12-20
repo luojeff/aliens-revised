@@ -25,5 +25,3 @@ for i in range(1, 9):
     all_flights = all_flights.append(flights, ignore_index=True)
 
 all_flights.to_csv('../data/flights/all_flights.csv')
-
-
