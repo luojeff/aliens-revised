@@ -10,6 +10,12 @@ all_flights = pd.DataFrame()
 
 offset = lambda t, id: (t - cml[id]['rawOffset']) % 86400
 
+def offset_dep(x):
+    return x['DEP_TIME'] - cml[x['ORIGIN_CITY_MARKET_ID']]
+
+def offset_arr(x):
+    return x['ARR_TIME'] - cml[x['DEST_CITY_MARKET_ID']]
+
 def hhmm_to_seconds(x):
     s = str(int(x))
     s = '0' * (4 - len(s)) + s
@@ -30,9 +36,9 @@ for i in range(1, 9):
     flights['o_lng'] = flights['ORIGIN_CITY_MARKET_ID'].apply(lambda x: cml[x]['lng'])
     flights['d_lat'] = flights['DEST_CITY_MARKET_ID'].apply(lambda x: cml[x]['lat'])
     flights['d_lng'] = flights['DEST_CITY_MARKET_ID'].apply(lambda x: cml[x]['lng'])
-    flights['DEP_TIME'] = flights[['DEP_TIME', 'ORIGIN_CITY_MARKET_ID']].apply(lambda x: offset(*x), axis=1)
-    flights['ARR_TIME'] = flights[['ARR_TIME', 'DEST_CITY_MARKET_ID']].apply(lambda x: offset(*x), axis=1)
+    flights['DEP_TIME'] = flights[['DEP_TIME', 'ORIGIN_CITY_MARKET_ID']].apply(offset_dep, axis=1)
+    flights['ARR_TIME'] = flights[['ARR_TIME', 'DEST_CITY_MARKET_ID']].apply(offset_arr, axis=1)
 
     all_flights = all_flights.append(flights, ignore_index=True)
-
+print all_flights.head()
 all_flights.to_csv('../data/flights/all_flights.csv')
