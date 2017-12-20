@@ -13,15 +13,21 @@ df = df.sample(n=600)
 lookup = {}
 
 def get_lat_lng(s):
-    geocode_result = gmaps.geocode(s)
-    return geocode_result[0]['geometry']['location']
+    g = gmaps.geocode(s)[0]['geometry']['location']
+    timezone = gmaps.timezone((g['lat'], g['lng']))
+    g.update({
+        'rawOffset': timezone['rawOffset'],
+        'timeZoneName': timezone['timeZoneName']
+    })
+    return g
 i = 0
 for index, row in df.iterrows():
     try:
-        print i
         lookup[int(row['Code'])] = get_lat_lng(row['Description'])
+        print "%d / 600" % i
         i += 1
     except:
+        i += 1
         continue
 
 f = open('../data/lookups/' + filename.split('.')[0] + '.dict', 'w')
