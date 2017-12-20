@@ -4,3 +4,4 @@ venv/*
 .DS_Store
 */.DS_Store
 */gcp-credentials.json
+*/gcp.key
