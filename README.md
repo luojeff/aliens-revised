@@ -11,3 +11,9 @@ seaborn
 plotly
 IPython
 sklearn
+
+## Contributors
+Jeffrey Luo<br>
+Jason Kao<br>
+Max Zlotskiy<br>
+Khyber Sen
